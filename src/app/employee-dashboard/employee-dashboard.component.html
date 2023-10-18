@@ -1,0 +1,158 @@
+ <nav class="navbar navbar-light bg-primary">
+    <div class="container-fluid">
+
+        <h1 style="color: aliceblue;">Angular CRUD</h1>
+        <div class="div-flex">
+            <button (click)="  clickAddEmployee()" type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success">ADD Employee</button>
+        </div>
+    </div>
+</nav>
+
+<table class="table mt-3"> 
+    <thead>
+        <tr>
+            <th scope="col">Employee Id</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email Id</th>
+            <th scope="col">Phone No</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of employeeData">
+            <td>{{row.id}}</td>
+            <td>{{row.firstName}}</td>
+            <td>{{row.lastName}}</td>
+            <td>{{row.email}}</td>
+            <td>{{row.mobile}}</td>
+            <td>{{row.salary}}</td>
+            <td >
+                <button (click)="onEdit(row)" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"class="btn btn-info">Edit</button>
+                <button (click)="deleteEmployee(row)" class="btn btn-danger mx-3">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Employee Details</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        
+            <form [formGroup]="formValue" (keydown.enter)="submitForm()">
+              
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">First Name</label>
+              <input type="text" formControlName="firstName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required [ngClass]="{'is-invalid': formValue.controls['firstName'].touched && formValue.controls['firstName'].hasError('required')}">
+                  <div *ngIf="formValue.controls['firstName'].touched && formValue.controls['firstName'].invalid" class="invalid-feedback">
+                    <small *ngIf="formValue.controls['firstName'].errors && formValue.controls['firstName'].errors['required']">First name is required</small>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Last Name</label>
+              <input type="text" formControlName="lastName" class="form-control" id="exampleInputPassword1" required [ngClass]="{'is-invalid': formValue.controls['lastName'].touched && formValue.controls['lastName'].hasError('required')}">
+                  <div *ngIf="formValue.controls['lastName'].touched && formValue.controls['lastName'].invalid" class="invalid-feedback">
+                    <small *ngIf="formValue.controls['lastName'].errors && formValue.controls['lastName'].errors['required']">last name is required</small>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Email Id.</label>
+              <input type="email" formControlName="email" class="form-control" id="exampleInputPassword1" required [ngClass]="{'is-invalid': formValue.controls['email'].touched && formValue.controls['email'].hasError('required') || formValue.controls['email'].hasError('pattern')}">
+                    <div *ngIf="formValue.controls['email'].touched && formValue.controls['email'].invalid" class="invalid-feedback">
+                      <small *ngIf="formValue.controls['email'].errors && formValue.controls['email'].errors['required']">Email is required</small>
+                      <small *ngIf="formValue.controls['email'].errors && formValue.controls['email'].errors['pattern']">enter valid email</small>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Phone No</label>
+              <input type="text" formControlName="mobile" class="form-control" id="exampleInputPassword1" required pattern="[0-9]{10}" [ngClass]="{'is-invalid': formValue.controls['mobile'].touched && (formValue.controls['mobile'].hasError('required') || formValue.controls['mobile'].hasError('pattern'))}">
+                    <div *ngIf="formValue.controls['mobile'].touched && formValue.controls['mobile'].invalid" class="invalid-feedback">
+                      <small *ngIf="formValue.controls['mobile'].errors && formValue.controls['mobile'].errors['required']">Phone no is required</small>
+                      <small *ngIf="formValue.controls['mobile'].errors && formValue.controls['mobile'].errors['pattern']">Invalid Pattern , must be 10 digits</small>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Salary</label>
+              <input type="text" formControlName="salary" class="form-control" id="exampleInputPassword1" required pattern="[0-9]+" [ngClass]="{'is-invalid': formValue.controls['salary'].touched && (formValue.controls['salary'].hasError('required') || formValue.controls['salary'].hasError('pattern'))}">
+                    <div *ngIf="formValue.controls['salary'].touched && formValue.controls['salary'].invalid" class="invalid-feedback">
+                      <small *ngIf="formValue.controls['salary'].errors && formValue.controls['salary'].errors['required']">Salary is required</small>
+                      <small *ngIf="formValue.controls['salary'].errors && formValue.controls['salary'].errors['pattern']">Invalid Pattern</small>
+                    </div>
+                  </div>
+          
+        <div class="modal-footer">
+            <button type="button" id="cancel"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" *ngIf="showAdd"  (click)="postEmployeeDetails()" class="btn btn-primary">Add</button>
+            <button type="button" *ngIf="showUpdate" (click)="updateEmployeeDetails()" class="btn btn-primary">Update</button>
+        </div>
+    </form> 
+    </div>
+  </div>
+  </div>
+
+
+
+   <!-- <form [formGroup]="formValue">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">First Name</label>
+              <input type="text" formControlName="firstName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required [ngClass]="{'is-invalid': formValue.controls['firstName'].touched && formValue.controls['firstName'].hasError('required')}">
+              <div *ngIf="formValue.controls['firstName'].touched && formValue.controls['firstName'].hasError('required')" class="invalid-feedback">
+                First name is required
+              </div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Last Name</label>
+              <input type="text" formControlName="lastName" class="form-control" id="exampleInputPassword1" required [ngClass]="{'is-invalid': formValue.controls['lastName'].touched && formValue.controls['lastName'].hasError('required')}">
+              <div *ngIf="formValue.controls['lastName'].touched && formValue.controls['lastName'].hasError('required')" class="invalid-feedback">
+                Last name is required
+              </div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Email Id.</label>
+              <input type="email" formControlName="email" class="form-control" id="exampleInputPassword1" required [ngClass]="{'is-invalid': formValue.controls['email'].touched && formValue.controls['email'].hasError('required')}">
+              <div *ngIf="formValue.controls['email'].touched && formValue.controls['email'].hasError('required')" class="invalid-feedback">
+                Email is required
+              </div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Phone No</label>
+              <input type="text" formControlName="mobile" class="form-control" id="exampleInputPassword1" required pattern="[0-9]{10}" [ngClass]="{'is-invalid': formValue.controls['mobile'].touched && (formValue.controls['mobile'].hasError('required') || formValue.controls['mobile'].hasError('pattern'))}">
+              <div *ngIf="formValue.controls['mobile'].touched && formValue.controls['mobile'].hasError('required')" class="invalid-feedback">
+                Phone number is required
+              </div>
+              <div *ngIf="formValue.controls['mobile'].touched && formValue.controls['mobile'].hasError('pattern')" class="invalid-feedback">
+                Invalid phone number format
+              </div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Salary</label>
+              <input type="text" formControlName="salary" class="form-control" id="exampleInputPassword1" required pattern="[0-9]+" [ngClass]="{'is-invalid': formValue.controls['salary'].touched && (formValue.controls['salary'].hasError('required') || formValue.controls['salary'].hasError('pattern'))}">
+              <div *ngIf="formValue.controls['salary'].touched && formValue.controls['salary'].hasError('required')" class="invalid-feedback">
+                Salary is required
+              </div>
+              <div *ngIf="formValue.controls['salary'].touched && formValue.controls['salary'].hasError('pattern')" class="invalid-feedback">
+                Invalid salary format
+              </div>
+            </div>
+          
+            <div class="modal-footer">
+              <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" *ngIf="showAdd" (click)="postEmployeeDetails()" class="btn btn-primary">Add</button>
+              <button type="button" *ngIf="showUpdate" (click)="updateEmployeeDetails()" class="btn btn-primary">Update</button>
+            </div>
+          </form>-->

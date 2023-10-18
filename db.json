@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "id": 4,
+      "firstName": "Mahendra Singh",
+      "lastName": "Dhoni",
+      "email": "dhoni@gmail.com",
+      "mobile": "8147125400",
+      "salary": "50000"
+    },
+    {
+      "id": 5,
+      "firstName": "VIRAT",
+      "lastName": "KHOLI",
+      "email": "virat@gmail.com",
+      "mobile": "8147125540",
+      "salary": "100000"
+    },
+    {
+      "id": 6,
+      "firstName": "Sachin",
+      "lastName": "Tendulkar",
+      "email": "sachin@gmail.com",
+      "mobile": "9611076906",
+      "salary": "12345"
+    },
+    {
+      "id": 7,
+      "firstName": "vinayak",
+      "lastName": "khavashi",
+      "email": "vinukhavasi@gmail.com",
+      "mobile": "8147125540",
+      "salary": "90000"
+    }
+  ],
+  "comments": [],
+  "profile": {
+    "name": "typicode"
+  }
+}
